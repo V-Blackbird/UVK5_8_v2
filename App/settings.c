@@ -843,11 +843,13 @@ void SETTINGS_SaveSettings(void)
 #endif
 
 #ifdef ENABLE_VOICE_ENCRYPTION
-    // Save Caesar cipher settings to EEPROM (0x1FF8-0x1FF9)
-    uint8_t CaesarData[2];
+    // Save Caesar cipher settings to EEPROM (0x1FF8-0x1FFF)
+    // EEPROM_WriteBuffer always writes 8 bytes
+    uint8_t CaesarData[8];
+    memset(CaesarData, 0xFF, sizeof(CaesarData));
     CaesarData[0] = gEeprom.CAESAR_OFFSET;
     CaesarData[1] = gEeprom.CAESAR_ENABLED ? 1 : 0;
-    EEPROM_WriteBuffer(0x1FF8, CaesarData, 2);
+    EEPROM_WriteBuffer(0x1FF8, CaesarData);
 #endif
 }
 
