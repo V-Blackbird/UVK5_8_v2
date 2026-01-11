@@ -67,6 +67,7 @@
                 "ENABLE_AGC_SHOW_DATA": false,
                 "ENABLE_UART_RW_BK_REGS": false,
                 "ENABLE_SWD": false,
+                "ENABLE_VOICE_ENCRYPTION": false,
                 "VERSION_STRING_1": "v0.22",
                 "VERSION_STRING_2": "v4.3"
             }
@@ -143,6 +144,7 @@
                 "ENABLE_SQUELCH_MORE_SENSITIVE": false,
                 "ENABLE_FEAT_F4HWN_RESUME_STATE": false,
                 "ENABLE_FEAT_F4HWN_NARROWER": true,
+                "ENABLE_VOICE_ENCRYPTION": true,
                 "EDITION_STRING": "RadzikS",
                 "TARGET": "f4hwn.custom"
             }
