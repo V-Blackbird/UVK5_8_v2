@@ -847,7 +847,7 @@ void SETTINGS_SaveSettings(void)
     uint8_t CaesarData[2];
     CaesarData[0] = gEeprom.CAESAR_OFFSET;
     CaesarData[1] = gEeprom.CAESAR_ENABLED ? 1 : 0;
-    EEPROM_WriteBuffer(0x1FF8, CaesarData);
+    EEPROM_WriteBuffer(0x1FF8, CaesarData, 2);
 #endif
 }
 
