@@ -182,6 +182,9 @@ enable_feature(ENABLE_FEAT_F4HWN_PMR)
 enable_feature(ENABLE_FEAT_F4HWN_GMRS_FRS_MURS)
 enable_feature(ENABLE_FEAT_F4HWN_CA)
 enable_feature(ENABLE_FEAT_F4HWN_DEBUG)
+enable_feature(ENABLE_VOICE_ENCRYPTION
+    caesar.c
+)
 
 # ---- DEBUGGING ----
 

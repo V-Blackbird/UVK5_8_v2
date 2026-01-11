@@ -20,6 +20,9 @@
 #ifdef ENABLE_FMRADIO
     #include "app/fm.h"
 #endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    #include "caesar.h"
+#endif
 #include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/eeprom.h"
@@ -447,6 +450,19 @@ void SETTINGS_LoadCalibration(void)
         #ifdef ENABLE_FEAT_F4HWN
             gEeprom.VOLUME_GAIN_BACKUP   = gEeprom.VOLUME_GAIN;
         #endif
+        
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            // Read Caesar cipher settings from EEPROM (0x1FF8-0x1FF9)
+            uint8_t CaesarData[2];
+            EEPROM_ReadBuffer(0x1FF8, CaesarData, 2);
+            // Validate and set offset (any value 0-255 is valid)
+            gEeprom.CAESAR_OFFSET = CaesarData[0];
+            // Validate and set enabled (only 0 or 1 are valid)
+            gEeprom.CAESAR_ENABLED = (CaesarData[1] <= 1) ? CaesarData[1] : false;
+            // Sync with Caesar module
+            CAESAR_Init(gEeprom.CAESAR_OFFSET);
+            CAESAR_SetEnabled(gEeprom.CAESAR_ENABLED);
+        #endif
 
         BK4819_WriteRegister(BK4819_REG_3B, 22656 + gEeprom.BK4819_XTAL_FREQ_LOW);
 //      BK4819_WriteRegister(BK4819_REG_3C, gEeprom.BK4819_XTAL_FREQ_HIGH);
@@ -824,6 +840,16 @@ void SETTINGS_SaveSettings(void)
 
 #ifdef ENABLE_FEAT_F4HWN_VOL
     SETTINGS_WriteCurrentVol();
+#endif
+
+#ifdef ENABLE_VOICE_ENCRYPTION
+    // Save Caesar cipher settings to EEPROM (0x1FF8-0x1FFF)
+    // EEPROM_WriteBuffer always writes 8 bytes
+    uint8_t CaesarData[8];
+    memset(CaesarData, 0xFF, sizeof(CaesarData));
+    CaesarData[0] = gEeprom.CAESAR_OFFSET;
+    CaesarData[1] = gEeprom.CAESAR_ENABLED ? 1 : 0;
+    EEPROM_WriteBuffer(0x1FF8, CaesarData);
 #endif
 }
 

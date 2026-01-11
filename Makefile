@@ -68,6 +68,7 @@ ENABLE_FEAT_F4HWN_PMR           ?= 0
 ENABLE_FEAT_F4HWN_GMRS_FRS_MURS	?= 0
 ENABLE_FEAT_F4HWN_CA            ?= 1
 ENABLE_FEAT_F4HWN_DEBUG         ?= 0
+ENABLE_VOICE_ENCRYPTION         ?= 0
 
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA         ?= 0
@@ -178,6 +179,9 @@ ifeq ($(ENABLE_AM_FIX), 1)
 	OBJS += am_fix.o
 endif
 OBJS += audio.o
+ifeq ($(ENABLE_VOICE_ENCRYPTION),1)
+	OBJS += caesar.o
+endif
 OBJS += bitmaps.o
 OBJS += board.o
 OBJS += dcs.o
@@ -504,6 +508,9 @@ ifeq ($(ENABLE_FEAT_F4HWN_DEBUG),1)
 endif
 ifeq ($(ENABLE_EXTRA_UART_CMD),1)
 	CFLAGS  += -DENABLE_EXTRA_UART_CMD
+endif
+ifeq ($(ENABLE_VOICE_ENCRYPTION),1)
+	CFLAGS  += -DENABLE_VOICE_ENCRYPTION
 endif
 
 LDFLAGS =

@@ -37,6 +37,9 @@
 #if defined(ENABLE_OVERLAY)
     #include "sram-overlay.h"
 #endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    #include "caesar.h"
+#endif
 #include "ui/inputbox.h"
 #include "ui/menu.h"
 #include "ui/ui.h"
@@ -437,6 +440,16 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             case MENU_SET_KEY:
                 //*pMin = 0;
                 *pMax = 4;
+                break;
+        #endif
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                //*pMin = 0;
+                *pMax = 1;
+                break;
+            case MENU_CAESAR_OFFSET:
+                //*pMin = 0;
+                *pMax = 255;
                 break;
         #endif
 #endif
@@ -963,6 +976,16 @@ void MENU_AcceptSetting(void)
                 gEeprom.SET_KEY = gSubMenuSelection;
                 break;
         #endif
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                gEeprom.CAESAR_ENABLED = gSubMenuSelection;
+                CAESAR_SetEnabled(gEeprom.CAESAR_ENABLED);
+                break;
+            case MENU_CAESAR_OFFSET:
+                gEeprom.CAESAR_OFFSET = gSubMenuSelection;
+                CAESAR_SetOffset(gEeprom.CAESAR_OFFSET);
+                break;
+        #endif
         case MENU_SET_TMR:
             gSetting_set_tmr = gSubMenuSelection;
             break;
@@ -1406,6 +1429,14 @@ void MENU_ShowCurrentSetting(void)
         #ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
             case MENU_SET_KEY:
                 gSubMenuSelection = gEeprom.SET_KEY;
+                break;
+        #endif
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                gSubMenuSelection = gEeprom.CAESAR_ENABLED;
+                break;
+            case MENU_CAESAR_OFFSET:
+                gSubMenuSelection = gEeprom.CAESAR_OFFSET;
                 break;
         #endif
         case MENU_SET_TMR:

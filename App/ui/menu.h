@@ -151,6 +151,10 @@ enum
     #ifdef ENABLE_NOAA
         MENU_NOAA_S,
     #endif
+    #ifdef ENABLE_VOICE_ENCRYPTION
+        MENU_VOICE_ENCRYPT_EN,
+        MENU_CAESAR_OFFSET,
+    #endif
 #endif
     MENU_BATCAL,  // battery voltage calibration
     MENU_F1SHRT,
