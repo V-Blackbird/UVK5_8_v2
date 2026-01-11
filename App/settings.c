@@ -452,9 +452,13 @@ void SETTINGS_LoadCalibration(void)
         #endif
         
         #ifdef ENABLE_VOICE_ENCRYPTION
-            // Initialize Caesar cipher settings - for now, default to disabled
-            gEeprom.CAESAR_OFFSET = 0;
-            gEeprom.CAESAR_ENABLED = false;
+            // Read Caesar cipher settings from EEPROM (0x1FF8-0x1FF9)
+            uint8_t CaesarData[2];
+            EEPROM_ReadBuffer(0x1FF8, CaesarData, 2);
+            // Validate and set offset (any value 0-255 is valid)
+            gEeprom.CAESAR_OFFSET = CaesarData[0];
+            // Validate and set enabled (only 0 or 1 are valid)
+            gEeprom.CAESAR_ENABLED = (CaesarData[1] <= 1) ? CaesarData[1] : false;
             // Sync with Caesar module
             CAESAR_Init(gEeprom.CAESAR_OFFSET);
             CAESAR_SetEnabled(gEeprom.CAESAR_ENABLED);
@@ -836,6 +840,14 @@ void SETTINGS_SaveSettings(void)
 
 #ifdef ENABLE_FEAT_F4HWN_VOL
     SETTINGS_WriteCurrentVol();
+#endif
+
+#ifdef ENABLE_VOICE_ENCRYPTION
+    // Save Caesar cipher settings to EEPROM (0x1FF8-0x1FF9)
+    uint8_t CaesarData[2];
+    CaesarData[0] = gEeprom.CAESAR_OFFSET;
+    CaesarData[1] = gEeprom.CAESAR_ENABLED ? 1 : 0;
+    EEPROM_WriteBuffer(0x1FF8, CaesarData);
 #endif
 }
 

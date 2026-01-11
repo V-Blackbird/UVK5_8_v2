@@ -61,6 +61,7 @@ void CAESAR_Encrypt(const uint8_t *input, uint8_t *output, uint16_t length)
     }
 
     // Inline encryption loop for better performance
+    // Note: Wrap-around on overflow is intentional (modulo 256 arithmetic)
     while (length--)
     {
         *output++ = *input++ + g_caesar_offset;
@@ -82,6 +83,7 @@ void CAESAR_Decrypt(const uint8_t *input, uint8_t *output, uint16_t length)
     }
 
     // Inline decryption loop for better performance
+    // Note: Wrap-around on underflow is intentional (modulo 256 arithmetic)
     while (length--)
     {
         *output++ = *input++ - g_caesar_offset;
