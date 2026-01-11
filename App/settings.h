@@ -303,6 +303,10 @@ typedef struct {
     uint8_t               S0_LEVEL;
     uint8_t               S9_LEVEL;
 #endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    uint8_t               CAESAR_OFFSET;
+    bool                  CAESAR_ENABLED;
+#endif
 } EEPROM_Config_t;
 
 extern EEPROM_Config_t gEeprom;

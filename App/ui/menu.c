@@ -163,6 +163,9 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_NOAA
     {"SetNWR",      MENU_NOAA_S    },
 #endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    {"VoiEnc",      MENU_CAESAR_OFFSET },
+#endif
 #endif
     // hidden menu items from here on
     // enabled if pressing both the PTT and upper side button at power-on
@@ -1172,6 +1175,19 @@ void UI_DisplayMenu(void)
             case MENU_SET_KEY:
                 strcpy(String, gSubMenu_SET_KEY[gSubMenuSelection]);
                 break;                
+        #endif
+        
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_CAESAR_OFFSET:
+                if(gSubMenuSelection == 0)
+                {
+                    strcpy(String, "OFF");
+                }
+                else
+                {
+                    sprintf(String, "%u", gSubMenuSelection);
+                }
+                break;
         #endif
 #endif
 

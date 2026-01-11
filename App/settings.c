@@ -447,6 +447,12 @@ void SETTINGS_LoadCalibration(void)
         #ifdef ENABLE_FEAT_F4HWN
             gEeprom.VOLUME_GAIN_BACKUP   = gEeprom.VOLUME_GAIN;
         #endif
+        
+        #ifdef ENABLE_VOICE_ENCRYPTION
+            // Initialize Caesar cipher settings - for now, default to disabled
+            gEeprom.CAESAR_OFFSET = 0;
+            gEeprom.CAESAR_ENABLED = false;
+        #endif
 
         BK4819_WriteRegister(BK4819_REG_3B, 22656 + gEeprom.BK4819_XTAL_FREQ_LOW);
 //      BK4819_WriteRegister(BK4819_REG_3C, gEeprom.BK4819_XTAL_FREQ_HIGH);
