@@ -16,12 +16,12 @@
 
 #include <string.h>
 
-#ifdef ENABLE_VOICE_ENCRYPTION
-#include "caesar.h"
-#endif
 #include "app/dtmf.h"
 #ifdef ENABLE_FMRADIO
     #include "app/fm.h"
+#endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    #include "caesar.h"
 #endif
 #include "driver/bk1080.h"
 #include "driver/bk4819.h"

@@ -37,6 +37,9 @@
 #if defined(ENABLE_OVERLAY)
     #include "sram-overlay.h"
 #endif
+#ifdef ENABLE_VOICE_ENCRYPTION
+    #include "caesar.h"
+#endif
 #include "ui/inputbox.h"
 #include "ui/menu.h"
 #include "ui/ui.h"
@@ -976,9 +979,11 @@ void MENU_AcceptSetting(void)
         #ifdef ENABLE_VOICE_ENCRYPTION
             case MENU_VOICE_ENCRYPT_EN:
                 gEeprom.CAESAR_ENABLED = gSubMenuSelection;
+                CAESAR_SetEnabled(gEeprom.CAESAR_ENABLED);
                 break;
             case MENU_CAESAR_OFFSET:
                 gEeprom.CAESAR_OFFSET = gSubMenuSelection;
+                CAESAR_SetOffset(gEeprom.CAESAR_OFFSET);
                 break;
         #endif
         case MENU_SET_TMR:
