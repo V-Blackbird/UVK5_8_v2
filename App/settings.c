@@ -16,6 +16,9 @@
 
 #include <string.h>
 
+#ifdef ENABLE_VOICE_ENCRYPTION
+#include "caesar.h"
+#endif
 #include "app/dtmf.h"
 #ifdef ENABLE_FMRADIO
     #include "app/fm.h"
@@ -452,6 +455,9 @@ void SETTINGS_LoadCalibration(void)
             // Initialize Caesar cipher settings - for now, default to disabled
             gEeprom.CAESAR_OFFSET = 0;
             gEeprom.CAESAR_ENABLED = false;
+            // Sync with Caesar module
+            CAESAR_Init(gEeprom.CAESAR_OFFSET);
+            CAESAR_SetEnabled(gEeprom.CAESAR_ENABLED);
         #endif
 
         BK4819_WriteRegister(BK4819_REG_3B, 22656 + gEeprom.BK4819_XTAL_FREQ_LOW);

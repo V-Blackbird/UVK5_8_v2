@@ -440,6 +440,10 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
                 break;
         #endif
         #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                //*pMin = 0;
+                *pMax = 1;
+                break;
             case MENU_CAESAR_OFFSET:
                 //*pMin = 0;
                 *pMax = 255;
@@ -970,6 +974,9 @@ void MENU_AcceptSetting(void)
                 break;
         #endif
         #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                gEeprom.CAESAR_ENABLED = gSubMenuSelection;
+                break;
             case MENU_CAESAR_OFFSET:
                 gEeprom.CAESAR_OFFSET = gSubMenuSelection;
                 break;
@@ -1420,6 +1427,9 @@ void MENU_ShowCurrentSetting(void)
                 break;
         #endif
         #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                gSubMenuSelection = gEeprom.CAESAR_ENABLED;
+                break;
             case MENU_CAESAR_OFFSET:
                 gSubMenuSelection = gEeprom.CAESAR_OFFSET;
                 break;

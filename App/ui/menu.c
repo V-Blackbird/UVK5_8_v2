@@ -164,7 +164,8 @@ const t_menu_item MenuList[] =
     {"SetNWR",      MENU_NOAA_S    },
 #endif
 #ifdef ENABLE_VOICE_ENCRYPTION
-    {"VoiEnc",      MENU_CAESAR_OFFSET },
+    {"DigEnc",      MENU_VOICE_ENCRYPT_EN },
+    {"EncOfs",      MENU_CAESAR_OFFSET },
 #endif
 #endif
     // hidden menu items from here on
@@ -1178,6 +1179,9 @@ void UI_DisplayMenu(void)
         #endif
         
         #ifdef ENABLE_VOICE_ENCRYPTION
+            case MENU_VOICE_ENCRYPT_EN:
+                strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+                break;
             case MENU_CAESAR_OFFSET:
                 if(gSubMenuSelection == 0)
                 {

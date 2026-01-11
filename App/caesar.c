@@ -15,9 +15,8 @@
  */
 
 #include "caesar.h"
-#include <string.h>
 
-// Internal state
+// Internal state - minimal memory footprint
 static uint8_t g_caesar_offset = 0;
 static bool g_caesar_enabled = false;
 
@@ -49,38 +48,42 @@ bool CAESAR_IsEnabled(void)
 
 void CAESAR_Encrypt(const uint8_t *input, uint8_t *output, uint16_t length)
 {
+    // Early exit if disabled or offset is 0
     if (!g_caesar_enabled || g_caesar_offset == 0)
     {
-        // If disabled or offset is 0, just copy input to output
+        // Only copy if buffers are different
         if (input != output)
         {
-            memcpy(output, input, length);
+            while (length--)
+                *output++ = *input++;
         }
         return;
     }
 
-    // Apply Caesar cipher encryption (simple addition with wrap-around)
-    for (uint16_t i = 0; i < length; i++)
+    // Inline encryption loop for better performance
+    while (length--)
     {
-        output[i] = input[i] + g_caesar_offset;
+        *output++ = *input++ + g_caesar_offset;
     }
 }
 
 void CAESAR_Decrypt(const uint8_t *input, uint8_t *output, uint16_t length)
 {
+    // Early exit if disabled or offset is 0
     if (!g_caesar_enabled || g_caesar_offset == 0)
     {
-        // If disabled or offset is 0, just copy input to output
+        // Only copy if buffers are different
         if (input != output)
         {
-            memcpy(output, input, length);
+            while (length--)
+                *output++ = *input++;
         }
         return;
     }
 
-    // Apply Caesar cipher decryption (simple subtraction with wrap-around)
-    for (uint16_t i = 0; i < length; i++)
+    // Inline decryption loop for better performance
+    while (length--)
     {
-        output[i] = input[i] - g_caesar_offset;
+        *output++ = *input++ - g_caesar_offset;
     }
 }
